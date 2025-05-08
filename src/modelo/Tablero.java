@@ -1,26 +1,27 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Tablero {
     private int idTablero;
     private ArrayList<Casilla> Casillas;
     private ArrayList<Jugador> jugadores;
-    private  int turnos;
+    private int turnos;
     private Jugador jugador;
 
-
-    public Tablero(int idTablero , ArrayList<Casilla> Casillas, ArrayList<Jugador> jugadores, int turnos , Jugador jugador ){
+    public Tablero(int idTablero, ArrayList<Casilla> Casillas, ArrayList<Jugador> jugadores, int turnos, Jugador jugador) {
         this.idTablero = idTablero;
         this.Casillas = Casillas;
         this.jugadores = jugadores;
-        this.turnos=turnos;
+        this.turnos = turnos;
         this.jugador = jugador;
     }
 
     public int getIdTablero() {
         return idTablero;
     }
+
     public void setIdTablero(int idTablero) {
         this.idTablero = idTablero;
     }
@@ -57,12 +58,43 @@ public class Tablero {
         this.jugador = jugador;
     }
 
+    // Método para inicializar las casillas del tablero de forma aleatoria
+    public void inicializarCasillas() {
+        Random rand = new Random();
+        // Limpiar la lista de casillas antes de agregar las nuevas
+        Casillas.clear();
 
-    public void actualizarTablero() {
+        for (int i = 0; i < 50; i++) { // Supongo que el tablero tiene 50 casillas
+            Casilla casilla;
 
+            // Generar un número aleatorio entre 0 y 3 para elegir el tipo de casilla
+            int tipoCasilla = rand.nextInt(4); // 0: CasillaEvento, 1: CasillaAgujero, 2: CasillaOso, 3: CasillaSueloQuebradizo
+
+            switch (tipoCasilla) {
+                case 0:
+                    casilla = new CasillaEvento(i, i, new ArrayList<>(), "evento"); // Cambié el tipoEvento aquí
+                    break;
+                case 1:
+                    casilla = new CasillaAgujero(i, i, new ArrayList<>());
+                    break;
+                case 2:
+                    casilla = new CasillaOso(i, i, new ArrayList<>());
+                    break;
+                case 3:
+                    casilla = new CasillaSueloQuebradizo(i, i, new ArrayList<>());
+                    break;
+                default:
+                    casilla = new CasillaSueloQuebradizo(i, i, new ArrayList<>());
+                    break;
+            }
+
+            // Añadir la casilla generada a la lista de casillas del tablero
+            Casillas.add(casilla);
+        }
     }
 
-
-
-
+    // Método para actualizar el tablero (lo puedes personalizar más adelante)
+    public void actualizarTablero() {
+        // Lógica para actualizar el tablero si es necesario
+    }
 }

@@ -2,7 +2,7 @@ package modelo;
 
 import java.util.ArrayList;
 
-public abstract class CasillaSueloQuebradizo extends Casilla {
+public class CasillaSueloQuebradizo extends Casilla {
     public CasillaSueloQuebradizo(int idCasilla ,int posicion , ArrayList<Jugador> jugadoresActuales) {
         super(idCasilla, posicion , jugadoresActuales);
     }
