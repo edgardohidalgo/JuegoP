@@ -182,7 +182,6 @@
                      </font>
                   </Text>
                   <Circle fx:id="P1" fill="BLUE" radius="15.0" stroke="BLACK" strokeType="INSIDE">
-
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></Circle>
