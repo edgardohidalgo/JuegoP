@@ -3,44 +3,38 @@ package modelo;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 public class CasillaEvento extends Casilla {
     private String[] eventos = { "pez", "bolas", "rapido", "lento", "pierdeTurno", "pierdeItem", "motos" };
-
-    public CasillaEvento(int idCasilla ,int posicion , ArrayList<Jugador> jugadoresActuales , String[] eventos) {
+    public CasillaEvento(int idCasilla ,int posicion , ArrayList<Jugador> jugadoresActuales , String tipoEvento) {
         super(idCasilla, posicion , jugadoresActuales);
+        this.eventos = eventos;
     }
 
     @Override
-    public int realizarAccion(Jugador jugador) {
-        if (jugador instanceof Pinguino) {
-            Random ran = new Random();
-            int pos = ran.nextInt(7); // Random entre 0 y 6
+    public void realizarAccion() {
+        for (Jugador j : getJugadoresActuales()) {
+            if (j instanceof Pinguino) {
+                Random ran = new Random();
+                int pos = ran.nextInt(6);
 
-            switch (eventos[pos]) {
-                case "pez":
-                    // Acción de "pez"
-                    break;
-                case "bolas":
-                    ((Pinguino) jugador).añadirItem();
-                    break;
-                case "rapido":
-                    // Implementar movimiento rápido
-                    break;
-                case "lento":
-                    // Implementar movimiento lento
-                    break;
-                case "pierdeTurno":
-                    // Implementar pérdida de turno
-                    break;
-                case "pierdeItem":
-                    ((Pinguino) jugador).quitaritem();
-                    break;
-                case "motos":
-                    // Implementar motos (quizás movimiento extra o algo específico)
-                    break;
+                if (eventos[pos].equals("pez")) {
+                } else if (eventos[pos].equals("bolas")) {
+
+
+                } else if (eventos[pos].equals("rapido")) {
+
+                } else if (eventos[pos].equals("lento")) {
+
+                } else if (eventos[pos].equals("pierdeTurno")) {
+
+                } else if (eventos[pos].equals("pierdeItem")) {
+
+                } else if (eventos[pos].equals("motos")) {
+
+                }
             }
-            return jugador.getPosicion(); // No cambia la posición, solo el efecto
         }
-        return jugador.getPosicion();
     }
+
 }
