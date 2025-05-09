@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-
 import modelo.*;
 
 public class pantallaJuegoController {
@@ -39,101 +38,79 @@ public class pantallaJuegoController {
     @FXML private GridPane tablero;
     @FXML private Circle P1;
 
-
-    // Game objects
-    private Tablero tableroJuego;
-    private Jugador jugador1;
+    // Game logic
+    private Tablero tableroJuego;  // Usamos el nombre correcto de la clase
+    private Jugador jugador1; // Ahora es una instancia de Jugador
 
     private final int COLUMNS = 5;
 
     @FXML
     private void initialize() {
-        // Initialize player
-        jugador1 = new Jugador(1, "ed", 0, "rojo");
+        eventos.setText("¡El juego ha comenzado!");
 
-        // Create a list of players (if you want multiple players)
+        // Inicializa jugadores y tablero
+        jugador1 = new Jugador(1,"ed" , 0 , "rojo");
         ArrayList<Jugador> jugadores = new ArrayList<>();
         jugadores.add(jugador1);
 
-        // Initialize the board and assign players
         tableroJuego = new Tablero(1, new ArrayList<>(), jugadores, 0, jugador1);
-
-        // Initialize the casillas (this will add Casilla objects to the board)
-        tableroJuego.inicializarCasillas();
-
-
-
-        // Display an initial message
-        eventos.setText("¡El juego ha comenzado!");
+        tableroJuego.inicializarCasillas(); // Inicializa las casillas del tablero
     }
 
     @FXML
     private void handleDado(ActionEvent event) {
         Random rand = new Random();
-        int diceResult = rand.nextInt(6) + 1;
+        int diceResult = rand.nextInt(6) + 1;  // Genera un número aleatorio entre 1 y 6
 
-        // Update the Text
         dadoResultText.setText("Ha salido: " + diceResult);
-
-        // Move the player and execute the casilla action
-        moveJugador(jugador1, diceResult);
+        moveJugador(jugador1, diceResult); // Mueve al jugador y ejecuta la acción de la casilla
     }
 
     private void moveJugador(Jugador jugador, int steps) {
-        int currentPos = jugador.getPosicion();
-        int nuevaPos = Math.min(currentPos + steps, 49);
-        jugador.setPosicion(nuevaPos);
+        // Eliminar jugador de la casilla anterior
+        tableroJuego.getCasillas().get(jugador.getPosicion()).eliminarJugador(jugador);
 
-        Casilla casillaActual = tableroJuego.getCasillas().get(nuevaPos);
-        int posicionDespues = casillaActual.realizarAccion(jugador);
+        jugador.moverse(steps); // Mueve al jugador de acuerdo al dado
 
-        // Si la acción de la casilla cambió la posición, actualizamos de nuevo
-        if (posicionDespues != nuevaPos) {
-            jugador.setPosicion(posicionDespues);
+        // Asegúrate de no exceder las 50 casillas
+        if (jugador.getPosicion() >= 50) jugador.setPosicion(49);
 
-            // Ejecutamos también la acción de la nueva casilla si es distinta
-            Casilla nuevaCasilla = tableroJuego.getCasillas().get(posicionDespues);
-            nuevaCasilla.realizarAccion(jugador);
-        }
+        // Añadir jugador a la nueva casilla
+        Casilla nuevaCasilla = tableroJuego.getCasillas().get(jugador.getPosicion());
+        nuevaCasilla.anadirJugador(jugador);
 
-        actualizarInterfaz();
-    }
-
-
-
-    private void actualizarInterfaz() {
-        int posFinal = jugador1.getPosicion();
-        int row = posFinal / COLUMNS;
-        int col = posFinal % COLUMNS;
-
+        // Actualizar la posición gráfica del jugador (P1)
+        int row = jugador.getPosicion() / COLUMNS;
+        int col = jugador.getPosicion() % COLUMNS;
         GridPane.setRowIndex(P1, row);
         GridPane.setColumnIndex(P1, col);
 
-        eventos.setText("Estás en la casilla " + posFinal + " y se ejecutó una acción.");
+        // Ejecutar acción de la casilla
+        nuevaCasilla.realizarAccion();
+        eventos.setText("Estás en la casilla " + jugador.getPosicion() + " y se ejecutó una acción.");
     }
-
 
     @FXML
     private void handleRapido() {
         System.out.println("Fast.");
-        // TODO: Implement fast movement or event
+        // Implementa la lógica para moverse más rápido (si aplicable)
     }
 
     @FXML
     private void handleLento() {
         System.out.println("Slow.");
-        // TODO: Implement slow movement or event
+        // Implementa la lógica para moverse más lentamente (si aplicable)
     }
 
     @FXML
     private void handlePeces() {
         System.out.println("Fish.");
-        // TODO: Implement fish event
+        // Implementa la lógica relacionada con el evento "Peces"
     }
 
     @FXML
     private void handleNieve() {
         System.out.println("Snow.");
-        // TODO: Implement snow event
+        // Implementa la lógica relacionada con el evento "Nieve"
     }
 }
