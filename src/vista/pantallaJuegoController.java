@@ -1,8 +1,5 @@
 package vista;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,22 +8,23 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import modelo.*;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class pantallaJuegoController {
 
-    // Menu items
+    // FXML elementos
     @FXML private MenuItem newGame;
     @FXML private MenuItem saveGame;
     @FXML private MenuItem loadGame;
     @FXML private MenuItem quitGame;
 
-    // Buttons
     @FXML private Button dado;
     @FXML private Button rapido;
     @FXML private Button lento;
     @FXML private Button peces;
     @FXML private Button nieve;
 
-    // Texts
     @FXML private Text dadoResultText;
     @FXML private Text rapido_t;
     @FXML private Text lento_t;
@@ -34,83 +32,89 @@ public class pantallaJuegoController {
     @FXML private Text nieve_t;
     @FXML private Text eventos;
 
-    // Game board and player pieces
     @FXML private GridPane tablero;
     @FXML private Circle P1;
-
-    // Game logic
-    private Tablero tableroJuego;  // Usamos el nombre correcto de la clase
-    private Jugador jugador1; // Ahora es una instancia de Jugador
+    @FXML private Circle P2;
+    @FXML private Circle P3;
+    @FXML private Circle P4;
 
     private final int COLUMNS = 5;
+
+    // MODELO
+    private Tablero tableroModelo;
+    private Jugador jugador;
 
     @FXML
     private void initialize() {
         eventos.setText("¡El juego ha comenzado!");
 
-        // Inicializa jugadores y tablero
-        jugador1 = new Jugador(1,"ed" , 0 , "rojo");
+        // Inicializamos el tablero con casillas y jugador
+        jugador = new Jugador(1, "Jugador 1", 0, null); // ejemplo
         ArrayList<Jugador> jugadores = new ArrayList<>();
-        jugadores.add(jugador1);
+        jugadores.add(jugador);
 
-        tableroJuego = new Tablero(1, new ArrayList<>(), jugadores, 0, jugador1);
-        tableroJuego.inicializarCasillas(); // Inicializa las casillas del tablero
+        tableroModelo = new Tablero(1, new ArrayList<>(), jugadores, 0, jugador);
+        tableroModelo.inicializarCasillas();
+
+        System.out.println("Tablero y casillas inicializados.");
     }
 
     @FXML
     private void handleDado(ActionEvent event) {
         Random rand = new Random();
-        int diceResult = rand.nextInt(6) + 1;  // Genera un número aleatorio entre 1 y 6
-
+        int diceResult = rand.nextInt(6) + 1;
         dadoResultText.setText("Ha salido: " + diceResult);
-        moveJugador(jugador1, diceResult); // Mueve al jugador y ejecuta la acción de la casilla
+
+        moverJugador(diceResult);
     }
 
-    private void moveJugador(Jugador jugador, int steps) {
-        // Eliminar jugador de la casilla anterior
-        tableroJuego.getCasillas().get(jugador.getPosicion()).eliminarJugador(jugador);
+    private void moverJugador(int pasos) {
+        int posicionActual = jugador.getPosicion();
+        int nuevaPosicion = posicionActual + pasos;
 
-        jugador.moverse(steps); // Mueve al jugador de acuerdo al dado
+        if (nuevaPosicion >= 50) {
+            nuevaPosicion = 49;
+        }
 
-        // Asegúrate de no exceder las 50 casillas
-        if (jugador.getPosicion() >= 50) jugador.setPosicion(49);
+        jugador.setPosicion(nuevaPosicion);
 
-        // Añadir jugador a la nueva casilla
-        Casilla nuevaCasilla = tableroJuego.getCasillas().get(jugador.getPosicion());
-        nuevaCasilla.anadirJugador(jugador);
+        // Mover visualmente el círculo
+        int fila = nuevaPosicion / COLUMNS;
+        int columna = nuevaPosicion % COLUMNS;
 
-        // Actualizar la posición gráfica del jugador (P1)
-        int row = jugador.getPosicion() / COLUMNS;
-        int col = jugador.getPosicion() % COLUMNS;
-        GridPane.setRowIndex(P1, row);
-        GridPane.setColumnIndex(P1, col);
+        GridPane.setRowIndex(P1, fila);
+        GridPane.setColumnIndex(P1, columna);
 
-        // Ejecutar acción de la casilla
-        nuevaCasilla.realizarAccion();
-        eventos.setText("Estás en la casilla " + jugador.getPosicion() + " y se ejecutó una acción.");
+        System.out.println("Jugador ahora en posición " + nuevaPosicion);
+
+        // Ejecutar la acción de la casilla
+        Casilla casillaActual = tableroModelo.getCasillas().get(nuevaPosicion);
+        casillaActual.getJugadoresActuales().clear();
+        casillaActual.getJugadoresActuales().add(jugador);
+
+        casillaActual.realizarAccion(jugador);
+
+        eventos.setText("Casilla " + nuevaPosicion + ": " + casillaActual.getClass().getSimpleName());
     }
 
+    // Los otros botones aún están por implementar
     @FXML
     private void handleRapido() {
         System.out.println("Fast.");
-        // Implementa la lógica para moverse más rápido (si aplicable)
     }
 
     @FXML
     private void handleLento() {
         System.out.println("Slow.");
-        // Implementa la lógica para moverse más lentamente (si aplicable)
     }
 
     @FXML
     private void handlePeces() {
         System.out.println("Fish.");
-        // Implementa la lógica relacionada con el evento "Peces"
     }
 
     @FXML
     private void handleNieve() {
         System.out.println("Snow.");
-        // Implementa la lógica relacionada con el evento "Nieve"
     }
 }

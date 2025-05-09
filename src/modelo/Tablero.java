@@ -72,7 +72,7 @@ public class Tablero {
 
             switch (tipoCasilla) {
                 case 0:
-                    casilla = new CasillaEvento(i, i, new ArrayList<>(), "evento"); // Cambié el tipoEvento aquí
+                    casilla = new CasillaEvento(i, i, new ArrayList<>() ); // Cambié el tipoEvento aquí
                     break;
                 case 1:
                     casilla = new CasillaAgujero(i, i, new ArrayList<>());
@@ -83,6 +83,9 @@ public class Tablero {
                 case 3:
                     casilla = new CasillaSueloQuebradizo(i, i, new ArrayList<>());
                     break;
+                case 4:
+                    casilla = new CasillaTrineo(i, i, new ArrayList<>());
+                    break;
                 default:
                     casilla = new CasillaSueloQuebradizo(i, i, new ArrayList<>());
                     break;
@@ -90,6 +93,7 @@ public class Tablero {
 
             // Añadir la casilla generada a la lista de casillas del tablero
             Casillas.add(casilla);
+            System.out.println("Casilla " + i + " inicializada: " + casilla.getClass().getSimpleName());
         }
     }
 

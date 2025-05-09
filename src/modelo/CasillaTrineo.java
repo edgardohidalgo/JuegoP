@@ -1,17 +1,19 @@
 package modelo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CasillaTrineo extends Casilla {
-    private List<Integer> posicionsTrineu; 
 
-    public CasillaTrineo(int idCasilla ,int posicion , ArrayList<Jugador> jugadoresActuales , List<Integer> posicionsTrineu) {
-        super(idCasilla, posicion , jugadoresActuales);
-        this.posicionsTrineu = posicionsTrineu;
+    public CasillaTrineo(int idCasilla, int posicion, ArrayList<Jugador> jugadoresActuales) {
+        super(idCasilla, posicion, jugadoresActuales);
     }
-
     @Override
-    public void realizarAccion() {
+    public int realizarAccion(Jugador jugador) {
+        if (jugador instanceof Pinguino) {
+            // Se devuelve al inicio del tablero
+            jugador.setPosicion(0);
+            return 0;
+        }
+        return jugador.getPosicion();
     }
 }

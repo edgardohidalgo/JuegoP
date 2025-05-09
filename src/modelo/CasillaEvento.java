@@ -3,38 +3,44 @@ package modelo;
 import java.util.ArrayList;
 import java.util.Random;
 
-
 public class CasillaEvento extends Casilla {
     private String[] eventos = { "pez", "bolas", "rapido", "lento", "pierdeTurno", "pierdeItem", "motos" };
-    public CasillaEvento(int idCasilla ,int posicion , ArrayList<Jugador> jugadoresActuales , String tipoEvento) {
+
+    public CasillaEvento(int idCasilla ,int posicion , ArrayList<Jugador> jugadoresActuales ) {
         super(idCasilla, posicion , jugadoresActuales);
-        this.eventos = eventos;
     }
 
     @Override
-    public void realizarAccion() {
-        for (Jugador j : getJugadoresActuales()) {
-            if (j instanceof Pinguino) {
-                Random ran = new Random();
-                int pos = ran.nextInt(6);
+    public int realizarAccion(Jugador jugador) {
+        if (jugador instanceof Pinguino) {
+            Random ran = new Random();
+            int pos = ran.nextInt(7); // Random entre 0 y 6
 
-                if (eventos[pos].equals("pez")) {
-                } else if (eventos[pos].equals("bolas")) {
-
-
-                } else if (eventos[pos].equals("rapido")) {
-
-                } else if (eventos[pos].equals("lento")) {
-
-                } else if (eventos[pos].equals("pierdeTurno")) {
-
-                } else if (eventos[pos].equals("pierdeItem")) {
-
-                } else if (eventos[pos].equals("motos")) {
-
-                }
+            switch (eventos[pos]) {
+                case "pez":
+                    // Acción de "pez"
+                    break;
+                case "bolas":
+                    ((Pinguino) jugador).añadirItem();
+                    break;
+                case "rapido":
+                    // Implementar movimiento rápido
+                    break;
+                case "lento":
+                    // Implementar movimiento lento
+                    break;
+                case "pierdeTurno":
+                    // Implementar pérdida de turno
+                    break;
+                case "pierdeItem":
+                    ((Pinguino) jugador).quitaritem();
+                    break;
+                case "motos":
+                    // Implementar motos (quizás movimiento extra o algo específico)
+                    break;
             }
+            return jugador.getPosicion(); // No cambia la posición, solo el efecto
         }
+        return jugador.getPosicion();
     }
-
 }
