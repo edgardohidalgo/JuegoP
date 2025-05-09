@@ -8,13 +8,13 @@ public abstract class Casilla {
     private ArrayList<Jugador> jugadoresActuales;
 
     public Casilla(int idCasilla , int posicion , ArrayList<Jugador> jugadoresActuales) {
-       this.posicion = posicion;
-       this.jugadoresActuales = jugadoresActuales;
-       this.idCasilla = idCasilla;
+        this.posicion = posicion;
+        this.jugadoresActuales = jugadoresActuales;
+        this.idCasilla = idCasilla;
     }
+
     public int getIdCasilla() {
         return idCasilla;
-
     }
     public void setIdCasilla(int idCasilla) {
         this.idCasilla = idCasilla;
@@ -27,19 +27,19 @@ public abstract class Casilla {
     }
     public ArrayList<Jugador> getJugadoresActuales() {
         return jugadoresActuales;
-
     }
     public void setJugadoresActuales(ArrayList<Jugador> jugadoresActuales) {
         this.jugadoresActuales = jugadoresActuales;
     }
+
     public void anadirJugador(Jugador jugador) {
         this.jugadoresActuales.add(jugador);
     }
+
     public void eliminarJugador(Jugador jugador) {
         this.jugadoresActuales.remove(jugador);
     }
 
-    public abstract  void  realizarAccion();
-
+    // Modificación: El método ahora devuelve la nueva posición tras la acción.
+    public abstract int realizarAccion(Jugador jugador);
 }
-

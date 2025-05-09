@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Tablero {
@@ -58,40 +59,33 @@ public class Tablero {
         this.jugador = jugador;
     }
 
-    // Método para inicializar las casillas del tablero de forma aleatoria
     public void inicializarCasillas() {
-        Random rand = new Random();
-        // Limpiar la lista de casillas antes de agregar las nuevas
-        Casillas.clear();
+        Casillas = new ArrayList<>();
 
-        for (int i = 0; i < 50; i++) { // Supongo que el tablero tiene 50 casillas
+        // Puedes cambiar el número y tipo de casillas según tu lógica de juego
+        for (int i = 0; i < 50; i++) {
+            ArrayList<Jugador> jugadoresEnCasilla = new ArrayList<>();
+
             Casilla casilla;
-
-            // Generar un número aleatorio entre 0 y 3 para elegir el tipo de casilla
-            int tipoCasilla = rand.nextInt(4); // 0: CasillaEvento, 1: CasillaAgujero, 2: CasillaOso, 3: CasillaSueloQuebradizo
-
-            switch (tipoCasilla) {
-                case 0:
-                    casilla = new CasillaEvento(i, i, new ArrayList<>(), "evento"); // Cambié el tipoEvento aquí
-                    break;
-                case 1:
-                    casilla = new CasillaAgujero(i, i, new ArrayList<>());
-                    break;
-                case 2:
-                    casilla = new CasillaOso(i, i, new ArrayList<>());
-                    break;
-                case 3:
-                    casilla = new CasillaSueloQuebradizo(i, i, new ArrayList<>());
-                    break;
-                default:
-                    casilla = new CasillaSueloQuebradizo(i, i, new ArrayList<>());
-                    break;
+            if (i % 5 == 0) {
+                // Evento con acciones predeterminadas
+                casilla = new CasillaEvento(i, i, jugadoresEnCasilla, new String[]{"pez", "bolas", "rapido", "lento", "pierdeTurno", "pierdeItem", "motos"});
+            } else if (i % 7 == 0) {
+                casilla = new CasillaOso(i, i, jugadoresEnCasilla);
+            } else if (i % 4 == 0) {
+                casilla = new CasillaSueloQuebradizo(i, i, jugadoresEnCasilla);
+            } else {
+                // Casilla normal sin evento
+                casilla = new CasillaAgujero(i, i, jugadoresEnCasilla);
             }
 
-            // Añadir la casilla generada a la lista de casillas del tablero
             Casillas.add(casilla);
+            System.out.println("Casilla " + i + " inicializada: " + casilla.getClass().getSimpleName());
+
         }
+
     }
+
 
     // Método para actualizar el tablero (lo puedes personalizar más adelante)
     public void actualizarTablero() {

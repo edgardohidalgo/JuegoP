@@ -16,16 +16,15 @@ public class Pinguino extends Jugador {
         this.inventario = inventario;
 
     }
-    public void gestionarBatalla(){
 
-    }
     public void usarObjeto() {
-
+       quitaritem();
     }
     public void añadirItem(){
-
+      inventario.getLista().add(null);
     }
     public void quitaritem(){
+        inventario.getLista().remove(inventario.getLista().size()-1);
 
     }
 
