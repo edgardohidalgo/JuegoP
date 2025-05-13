@@ -18,6 +18,7 @@ public class CasillaEvento extends Casilla {
 
             switch (eventos[pos]) {
                 case "pez":
+                    ((Pinguino) jugador).añadirItem();
                     // Acción de "pez"
                     break;
                 case "bolas":
@@ -25,9 +26,12 @@ public class CasillaEvento extends Casilla {
                     break;
                 case "rapido":
                     // Implementar movimiento rápido
+                    ((Pinguino) jugador).añadirItem();
+
                     break;
                 case "lento":
                     // Implementar movimiento lento
+                    ((Pinguino) jugador).añadirItem();
                     break;
                 case "pierdeTurno":
                     // Implementar pérdida de turno
@@ -36,7 +40,7 @@ public class CasillaEvento extends Casilla {
                     ((Pinguino) jugador).quitaritem();
                     break;
                 case "motos":
-                    // Implementar motos (quizás movimiento extra o algo específico)
+
                     break;
             }
             return jugador.getPosicion(); // No cambia la posición, solo el efecto

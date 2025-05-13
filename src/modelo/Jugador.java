@@ -1,5 +1,7 @@
 package modelo;
 
+import java.util.Random;
+
 public class Jugador {
     private int idJugador;
     private String nombre;

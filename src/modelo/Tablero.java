@@ -68,7 +68,7 @@ public class Tablero {
             Casilla casilla;
 
             // Generar un número aleatorio entre 0 y 3 para elegir el tipo de casilla
-            int tipoCasilla = rand.nextInt(4); // 0: CasillaEvento, 1: CasillaAgujero, 2: CasillaOso, 3: CasillaSueloQuebradizo
+            int tipoCasilla = rand.nextInt(5); // 0: CasillaEvento, 1: CasillaAgujero, 2: CasillaOso, 3: CasillaSueloQuebradizo
 
             switch (tipoCasilla) {
                 case 0:
@@ -84,7 +84,7 @@ public class Tablero {
                     casilla = new CasillaSueloQuebradizo(i, i, new ArrayList<>());
                     break;
                 case 4:
-                    casilla = new CasillaTrineo(i, i, new ArrayList<>());
+                    casilla = new CasillaTrineo(i, i, new ArrayList<>() , this);
                     break;
                 default:
                     casilla = new CasillaSueloQuebradizo(i, i, new ArrayList<>());
@@ -99,6 +99,7 @@ public class Tablero {
 
     // Método para actualizar el tablero (lo puedes personalizar más adelante)
     public void actualizarTablero() {
+
         // Lógica para actualizar el tablero si es necesario
     }
 }
