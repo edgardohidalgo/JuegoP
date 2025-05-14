@@ -1,21 +1,49 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Inventario {
-    private ArrayList<Item> lista;
+    private List<Item> lista = new ArrayList<>();
+    private Runnable callback; // Esto se ejecutará cada vez que cambie el inventario
 
-    // Constructor
-    public Inventario (){
-        this.lista = lista;
+    public void setCallback(Runnable callback) {
+        this.callback = callback;
     }
 
-    public ArrayList<Item> getLista() {
+    public void agregarItem(Item nuevoItem) {
+        boolean itemExistente = false;
+
+        for (Item item : lista) {
+            if (item.getNombre().equalsIgnoreCase(nuevoItem.getNombre())) {
+                item.setCantidad(item.getCantidad() + nuevoItem.getCantidad());
+                itemExistente = true;
+                break;
+            }
+        }
+
+        if (!itemExistente) {
+            lista.add(nuevoItem);
+        }
+
+        // Ejecutar el callback para actualizar la UI
+        if (callback != null) {
+            callback.run();
+        }
+    }
+
+    public void eliminarItem(int index) {
+        if (index >= 0 && index < lista.size()) {
+            lista.remove(index);
+
+            // Ejecutar el callback para actualizar la UI
+            if (callback != null) {
+                callback.run();
+            }
+        }
+    }
+
+    public List<Item> getLista() {
         return lista;
     }
-
-    public void setLista(ArrayList<Item> lista) {
-        this.lista = lista;
-    }
-
 }

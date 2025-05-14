@@ -43,15 +43,21 @@ public class pantallaJuegoController {
     // MODELO
     private Tablero tableroModelo;
     private Jugador jugador;
+    private Inventario inventario;
 
     @FXML
     private void initialize() {
         eventos.setText("¡El juego ha comenzado!");
 
         // Inicializamos el inventario para el pingüino
-        Inventario inventario = new Inventario();
+        inventario = new Inventario();
 
-        // Creamos un pingüino en lugar de un jugador genérico
+        // Establecer el callback para actualizar la UI cuando cambie el inventario
+        inventario.setCallback(() -> {
+            actualizarTextoInventario();
+            System.out.println("Callback ejecutado: Inventario actualizado");
+        });
+
         jugador = new Pinguino(1, "Jugador 1", 0, "blue", inventario);
 
         ArrayList<Jugador> jugadores = new ArrayList<>();
@@ -63,6 +69,9 @@ public class pantallaJuegoController {
 
         // Posicionar inicialmente el jugador en la casilla de inicio
         actualizarPosicionVisual();
+
+        // Asegurarse de que la UI muestre correctamente el inventario inicial
+        actualizarTextoInventario();
     }
 
     @FXML
@@ -117,6 +126,17 @@ public class pantallaJuegoController {
         String tipoCasilla = casillaActual.getClass().getSimpleName();
         actualizarEfectosCasilla(casillaActual);
 
+        // Asegurarse de actualizar el inventario después de cada acción
+        actualizarTextoInventario();
+
+        if (jugador instanceof Pinguino) {
+            Pinguino p = (Pinguino) jugador;
+            System.out.println("Inventario actual:");
+            for (Item item : p.getInventario().getLista()) {
+                System.out.println("- " + item.getNombre() + " (x" + item.getCantidad() + ")");
+            }
+        }
+
         System.out.println("Jugador finalmente en posición " + jugador.getPosicion() + " tras acción de casilla " + tipoCasilla);
     }
 
@@ -138,10 +158,12 @@ public class pantallaJuegoController {
             eventos.setText("¡Cayó en un agujero! Retrocede una casilla. (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaEvento) {
+            System.out.println("Inventario actual: " + inventario.getLista().size() + " items");
             eventos.setText("¡Evento especial activado! (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaOso) {
-            eventos.setText("¡Un oso ha aparecido! Vuelve al inicio del tablero. (Posición actual: " + jugador.getPosicion() + ")");
+            eventos.setText("¡Un oso ha aparecido! Vuelve al inicio del tablero." +
+                    " (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaSueloQuebradizo) {
             eventos.setText("¡Cuidado! El suelo está quebradizo. (Posición actual: " + jugador.getPosicion() + ")");
@@ -151,24 +173,59 @@ public class pantallaJuegoController {
         }
     }
 
-    // Los otros botones aún están por implementar
+    private void actualizarTextoInventario() {
+        int peces = 0, nieve = 0, rapido = 0, lento = 0;
+
+        for (Item item : inventario.getLista()) {
+            String nombreItem = item.getNombre().toLowerCase();
+            int cantidad = item.getCantidad();
+
+            switch (nombreItem) {
+                case "pez":
+                    peces += cantidad;
+                    break;
+                case "bola":
+                    nieve += cantidad;
+                    break;
+                case "dado_rapido":
+                    rapido += cantidad;
+                    break;
+                case "dado_lento":
+                    lento += cantidad;
+                    break;
+            }
+        }
+
+        peces_t.setText("Peces: " + peces);
+        nieve_t.setText("Bolas de nieve: " + nieve);
+        rapido_t.setText("Dado rápido: " + rapido);
+        lento_t.setText("Dado lento: " + lento);
+
+        System.out.println("UI actualizada - Peces: " + peces + ", Nieve: " + nieve +
+                ", Rápido: " + rapido + ", Lento: " + lento);
+    }
+
     @FXML
     private void handleRapido() {
         System.out.println("Fast.");
+        // Implementar la lógica para usar el dado rápido
     }
 
     @FXML
     private void handleLento() {
         System.out.println("Slow.");
+        // Implementar la lógica para usar el dado lento
     }
 
     @FXML
     private void handlePeces() {
         System.out.println("Fish.");
+        // Implementar la lógica para usar los peces
     }
 
     @FXML
     private void handleNieve() {
         System.out.println("Snow.");
+        // Implementar la lógica para usar las bolas de nieve
     }
 }
