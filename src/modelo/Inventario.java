@@ -6,7 +6,7 @@ public class Inventario {
     private ArrayList<Item> lista;
 
     // Constructor
-    public Inventario ( ArrayList<Item> lista){
+    public Inventario (){
         this.lista = lista;
     }
 

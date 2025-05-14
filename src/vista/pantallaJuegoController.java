@@ -48,14 +48,21 @@ public class pantallaJuegoController {
     private void initialize() {
         eventos.setText("¡El juego ha comenzado!");
 
-        // Inicializamos el tablero con casillas y jugador
-        jugador = new Jugador(1, "Jugador 1", 0, null);  // Ejemplo de jugador
+        // Inicializamos el inventario para el pingüino
+        Inventario inventario = new Inventario();
+
+        // Creamos un pingüino en lugar de un jugador genérico
+        jugador = new Pinguino(1, "Jugador 1", 0, "blue", inventario);
+
         ArrayList<Jugador> jugadores = new ArrayList<>();
         jugadores.add(jugador);
 
         tableroModelo = new Tablero(1, new ArrayList<>(), jugadores, 0, jugador);
         tableroModelo.inicializarCasillas();  // Inicializa las casillas del tablero
         System.out.println("Tablero y casillas inicializados.");
+
+        // Posicionar inicialmente el jugador en la casilla de inicio
+        actualizarPosicionVisual();
     }
 
     @FXML
@@ -78,88 +85,70 @@ public class pantallaJuegoController {
             nuevaPosicion = 49;  // La posición máxima es 49 (la última casilla)
         }
 
-        // Actualizar posición del jugador en el modelo
+        // Actualizar la posición del jugador en el modelo
         jugador.setPosicion(nuevaPosicion);
 
-        // Mover visualmente el círculo del jugador en el tablero
-        actualizarPosicionVisual(nuevaPosicion);
+        // Actualizar la posición visual antes de la acción
+        actualizarPosicionVisual();
 
         System.out.println("Jugador ahora en posición " + nuevaPosicion);
 
-        // Ejecutar la acción de la casilla y obtener la nueva posición después de la acción
+        // Ejecutar la acción de la casilla
         Casilla casillaActual = tableroModelo.getCasillas().get(nuevaPosicion);
 
-        // Añadir el jugador a la casilla actual
-        if (!casillaActual.getJugadoresActuales().contains(jugador)) {
-            casillaActual.getJugadoresActuales().clear();
-            casillaActual.getJugadoresActuales().add(jugador);
-        }
+        // Limpiar y añadir el jugador a la casilla actual
+        casillaActual.getJugadoresActuales().clear();
+        casillaActual.getJugadoresActuales().add(jugador);
 
-        // Ejecutar la acción de la casilla y obtener la nueva posición
+        // Guardar la posición actual antes de realizar la acción
+        int posAntes = jugador.getPosicion();
+
+        // Realizar la acción de la casilla y obtener la nueva posición
         int posicionDespuesDeAccion = casillaActual.realizarAccion(jugador);
 
-        // Si la posición cambió después de la acción, actualizar visualmente al jugador
-        if (posicionDespuesDeAccion != nuevaPosicion) {
-            System.out.println("La posición del jugador cambió de " + nuevaPosicion +
-                    " a " + posicionDespuesDeAccion + " después de la acción de la casilla");
-
-            // Actualizar la posición visual después de la acción
-            actualizarPosicionVisual(posicionDespuesDeAccion);
-
-            // Si la posición cambió, asegurarnos de que el jugador esté asociado a la nueva casilla
-            Casilla nuevaCasilla = tableroModelo.getCasillas().get(posicionDespuesDeAccion);
-
-            // Eliminar al jugador de la casilla anterior
-            casillaActual.eliminarJugador(jugador);
-
-            // Añadir al jugador a la nueva casilla
-            if (!nuevaCasilla.getJugadoresActuales().contains(jugador)) {
-                nuevaCasilla.getJugadoresActuales().add(jugador);
-            }
-
-            // Actualizar texto de evento basado en la nueva casilla
-            actualizarEfectosCasilla(nuevaCasilla);
-        } else {
-            // Si no cambió la posición, actualizar efectos de la casilla actual
-            actualizarEfectosCasilla(casillaActual);
+        // Verificar si la posición cambió después de la acción
+        if (posicionDespuesDeAccion != posAntes) {
+            System.out.println("La posición cambió de " + posAntes + " a " + posicionDespuesDeAccion + " después de la acción.");
+            // Actualizar la posición visual después del cambio
+            actualizarPosicionVisual();
         }
+
+        // Actualizar el texto del evento y efectos visuales basados en el tipo de casilla
+        String tipoCasilla = casillaActual.getClass().getSimpleName();
+        actualizarEfectosCasilla(casillaActual);
+
+        System.out.println("Jugador finalmente en posición " + jugador.getPosicion() + " tras acción de casilla " + tipoCasilla);
     }
 
-    // Método auxiliar para actualizar la posición visual del jugador
-    private void actualizarPosicionVisual(int posicion) {
-        int fila = posicion / COLUMNS;
-        int columna = posicion % COLUMNS;
+    // Método para actualizar la posición visual del jugador
+    private void actualizarPosicionVisual() {
+        int posicionActual = jugador.getPosicion();
+        int fila = posicionActual / COLUMNS;
+        int columna = posicionActual % COLUMNS;
+
         GridPane.setRowIndex(P1, fila);
         GridPane.setColumnIndex(P1, columna);
+
+        System.out.println("Posición visual actualizada a fila " + fila + ", columna " + columna + " (posición " + posicionActual + ")");
     }
 
     // Método que actualiza los efectos visuales basados en la casilla
     private void actualizarEfectosCasilla(Casilla casilla) {
-        String mensaje = "";
-
         if (casilla instanceof CasillaAgujero) {
-            mensaje = "¡Cayó en un agujero! Retrocede una casilla.";
-            P1.setStyle("-fx-fill: red;");  // Cambiar el color del jugador (ejemplo visual)
+            eventos.setText("¡Cayó en un agujero! Retrocede una casilla. (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaEvento) {
-            mensaje = "¡Evento especial activado!";
-            P1.setStyle("-fx-fill: green;");  // Cambiar el color del jugador
+            eventos.setText("¡Evento especial activado! (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaOso) {
-            mensaje = "¡Un oso ha aparecido! El jugador vuelve al inicio.";
-            P1.setStyle("-fx-fill: blue;");  // Cambiar el color del jugador
+            eventos.setText("¡Un oso ha aparecido! Vuelve al inicio del tablero. (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaSueloQuebradizo) {
-            mensaje = "¡Cuidado! El suelo está quebradizo.";
-            P1.setStyle("-fx-fill: orange;");  // Cambiar el color del jugador
+            eventos.setText("¡Cuidado! El suelo está quebradizo. (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaTrineo) {
-            mensaje = "¡El jugador ha caído en un trineo y avanza más rápido!";
-            P1.setStyle("-fx-fill: yellow;");  // Cambiar el color del jugador
+            eventos.setText("¡El jugador ha caído en un trineo y avanza más rápido! (Posición actual: " + jugador.getPosicion() + ")");
         }
-
-        // Añadir la posición actual para más claridad
-        eventos.setText(mensaje + " (Casilla " + jugador.getPosicion() + ")");
     }
 
     // Los otros botones aún están por implementar
