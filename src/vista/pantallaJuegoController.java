@@ -165,8 +165,8 @@ public class pantallaJuegoController {
             eventos.setText("¡Un oso ha aparecido! Vuelve al inicio del tablero." +
                     " (Posición actual: " + jugador.getPosicion() + ")");
 
-        } else if (casilla instanceof CasillaSueloQuebradizo) {
-            eventos.setText("¡Cuidado! El suelo está quebradizo. (Posición actual: " + jugador.getPosicion() + ")");
+        } else if (casilla instanceof CasillaNormal) {
+            eventos.setText("Casilla Normal. (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaTrineo) {
             eventos.setText("¡El jugador ha caído en un trineo y avanza más rápido! (Posición actual: " + jugador.getPosicion() + ")");
@@ -201,20 +201,62 @@ public class pantallaJuegoController {
         rapido_t.setText("Dado rápido: " + rapido);
         lento_t.setText("Dado lento: " + lento);
 
-        System.out.println("UI actualizada - Peces: " + peces + ", Nieve: " + nieve +
+        System.out.println("Inventario actualizado - Peces: " + peces + ", Nieve: " + nieve +
                 ", Rápido: " + rapido + ", Lento: " + lento);
     }
 
     @FXML
     private void handleRapido() {
         System.out.println("Fast.");
-        // Implementar la lógica para usar el dado rápido
+
+        // Buscamos primero si hay dados rápidos disponibles
+        boolean tieneDadoRapido = false;
+        for (Item item : inventario.getLista()) {
+            if (item.getNombre().equalsIgnoreCase("dado_rapido") && item.getCantidad() > 0) {
+                item.setCantidad(item.getCantidad() - 1); // Reducimos la cantidad
+                tieneDadoRapido = true;
+                break;
+            }
+        }
+
+        if (tieneDadoRapido) {
+            // Generamos un número aleatorio entre 5 y 10
+            Random rand = new Random();
+            int diceResult = rand.nextInt(6) + 5;  // Valores entre 5 y 10
+            dadoResultText.setText("Ha salido: " + diceResult);
+
+            // Movemos al jugador con el número de pasos que salió en el dado
+            moverJugador(diceResult);
+        } else {
+            eventos.setText("No tienes dados rápidos disponibles.");
+        }
     }
 
     @FXML
     private void handleLento() {
         System.out.println("Slow.");
-        // Implementar la lógica para usar el dado lento
+
+        // Buscamos primero si hay dados lentos disponibles
+        boolean tieneDadoLento = false;
+        for (Item item : inventario.getLista()) {
+            if (item.getNombre().equalsIgnoreCase("dado_lento") && item.getCantidad() > 0) {
+                item.setCantidad(item.getCantidad() - 1); // Reducimos la cantidad
+                tieneDadoLento = true;
+                break;
+            }
+        }
+
+        if (tieneDadoLento) {
+            // Generamos un número aleatorio entre 1 y 3
+            Random rand = new Random();
+            int diceResult = rand.nextInt(3) + 1;  // Valores entre 1 y 3
+            dadoResultText.setText("Ha salido: " + diceResult);
+
+            // Movemos al jugador con el número de pasos que salió en el dado
+            moverJugador(diceResult);
+        } else {
+            eventos.setText("No tienes dados lentos disponibles.");
+        }
     }
 
     @FXML

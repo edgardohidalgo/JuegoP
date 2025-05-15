@@ -68,7 +68,7 @@ public class Tablero {
             Casilla casilla;
 
             // Generar un número aleatorio entre 0 y 3 para elegir el tipo de casilla
-            int tipoCasilla = rand.nextInt(5); // 0: CasillaEvento, 1: CasillaAgujero, 2: CasillaOso, 3: CasillaSueloQuebradizo
+            int tipoCasilla = rand.nextInt(7); // 0: CasillaEvento, 1: CasillaAgujero, 2: CasillaOso, 3: CasillaSueloQuebradizo
 
             switch (tipoCasilla) {
                 case 0:
@@ -80,14 +80,29 @@ public class Tablero {
                 case 2:
                     casilla = new CasillaOso(i, i, new ArrayList<>());
                     break;
+
                 case 3:
-                    casilla = new CasillaSueloQuebradizo(i, i, new ArrayList<>());
-                    break;
-                case 4:
                     casilla = new CasillaTrineo(i, i, new ArrayList<>() , this);
                     break;
+
+                case 4:
+                    casilla = new CasillaNormal(i,i,new ArrayList<>()) ;
+                    break;
+
+                case 5:
+                    casilla = new CasillaNormal(i,i,new ArrayList<>()) ;
+                    break;
+
+                case 6:
+                    casilla = new CasillaNormal(i,i,new ArrayList<>()) ;
+                    break;
                 default:
-                    casilla = new CasillaSueloQuebradizo(i, i, new ArrayList<>());
+                    casilla = new Casilla(i, i, new ArrayList<>()) {
+                        @Override
+                        public int realizarAccion(Jugador jugador) {
+                            return 0;
+                        }
+                    };
                     break;
             }
 

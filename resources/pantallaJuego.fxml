@@ -50,7 +50,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.pantallaJuegoController">
+<VBox prefWidth="1280.0" xmlns="http://javafx.com/javafx/24" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.pantallaJuegoController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -93,12 +93,12 @@
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="lento_t" strokeType="OUTSIDE" strokeWidth="0.0" text="Dado lento: 0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="30.0">
+                              <Text fx:id="lento_t" strokeType="OUTSIDE" strokeWidth="0.0" text="Dado lento: 0" AnchorPane.leftAnchor="280.0" AnchorPane.topAnchor="30.0">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="peces_t" strokeType="OUTSIDE" strokeWidth="0.0" text="Peces: 0" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="30.0">
+                              <Text fx:id="peces_t" strokeType="OUTSIDE" strokeWidth="0.0" text="Peces: 0" AnchorPane.leftAnchor="540.0" AnchorPane.topAnchor="30.0">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
@@ -113,12 +113,12 @@
                                     <Font size="30.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="lento" layoutX="65.0" layoutY="100.0" mnemonicParsing="false" text="Usar" AnchorPane.leftAnchor="290.0" AnchorPane.topAnchor="90.0">
+                              <Button fx:id="lento" layoutX="65.0" layoutY="100.0" mnemonicParsing="false" text="Usar" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="90.0">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="peces" layoutX="75.0" layoutY="110.0" mnemonicParsing="false" text="Usar" AnchorPane.leftAnchor="505.0" AnchorPane.topAnchor="90.0">
+                              <Button fx:id="peces" layoutX="75.0" layoutY="110.0" mnemonicParsing="false" text="Usar" AnchorPane.leftAnchor="550.0" AnchorPane.topAnchor="90.0">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
