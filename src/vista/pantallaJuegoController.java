@@ -10,6 +10,12 @@ import modelo.*;
 
 import java.util.ArrayList;
 import java.util.Random;
+/**
+ * Esta clase representa un ejemplo simple de uso de Javadoc.
+ *
+ * @author Edgardo Josue Hidalgo Saldarriaga
+ * @version java 17
+ */
 
 public class pantallaJuegoController {
 
