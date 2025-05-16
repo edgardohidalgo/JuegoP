@@ -207,27 +207,63 @@ public class pantallaJuegoController {
 
     @FXML
     private void handleRapido() {
-        Random rand = new Random();
-        int diceResult = rand.nextInt(6) + 5;  // Simulamos el lanzamiento del dado
-        dadoResultText.setText("Ha salido: " + diceResult);
+        // Verificar si hay dados rápidos disponibles en el inventario
+        Item dadoRapido = buscarItemEnInventario("dado_rapido");
 
-        // Movemos al jugador con el número de pasos que salió en el dado
-        moverJugador(diceResult);
+        if (dadoRapido != null && dadoRapido.getCantidad() > 0) {
+            // Descontar un dado rápido del inventario
+            dadoRapido.setCantidad(dadoRapido.getCantidad() - 1);
+
+            // Lanzar el dado rápido
+            Random rand = new Random();
+            int diceResult = rand.nextInt(6) + 5;  // Valores entre 5 y 10
+            dadoResultText.setText("Ha salido: " + diceResult);
+
+            // Actualizar la interfaz gráfica del inventario
+            actualizarTextoInventario();
+
+            // Mover al jugador con el número de pasos que salió en el dado
+            moverJugador(diceResult);
+        } else {
+            // No hay dados rápidos disponibles
+            eventos.setText("No tienes dados rápidos disponibles");
+        }
     }
 
     @FXML
     private void handleLento() {
-        System.out.println("Slow.");
+        // Verificar si hay dados lentos disponibles en el inventario
+        Item dadoLento = buscarItemEnInventario("dado_lento");
 
-        // Buscamos primero si hay dados lentos disponibles
-        Random rand = new Random();
-        int diceResult = rand.nextInt(4) ;  // Simulamos el lanzamiento del dado
-        dadoResultText.setText("Ha salido: " + diceResult);
+        if (dadoLento != null && dadoLento.getCantidad() > 0) {
+            // Descontar un dado lento del inventario
+            dadoLento.setCantidad(dadoLento.getCantidad() - 1);
 
-        // Movemos al jugador con el número de pasos que salió en el dado
-        moverJugador(diceResult);
+            // Lanzar el dado lento
+            Random rand = new Random();
+            int diceResult = rand.nextInt(4);  // Valores entre 0 y 3
+            dadoResultText.setText("Ha salido: " + diceResult);
+
+            // Actualizar la interfaz gráfica del inventario
+            actualizarTextoInventario();
+
+            // Mover al jugador con el número de pasos que salió en el dado
+            moverJugador(diceResult);
+        } else {
+            // No hay dados lentos disponibles
+            eventos.setText("No tienes dados lentos disponibles");
+        }
     }
 
+    // Método auxiliar para buscar un item específico en el inventario
+    private Item buscarItemEnInventario(String nombreItem) {
+        for (Item item : inventario.getLista()) {
+            if (item.getNombre().equalsIgnoreCase(nombreItem)) {
+                return item;
+            }
+        }
+        return null;
+    }
     @FXML
     private void handlePeces() {
         System.out.println("Fish.");

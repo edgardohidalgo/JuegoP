@@ -108,12 +108,12 @@
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Button fx:id="rapido" mnemonicParsing="false" text="Usar" AnchorPane.leftAnchor="55.0" AnchorPane.topAnchor="90.0">
+                              <Button fx:id="rapido" mnemonicParsing="false" onAction="#handleRapido" text="Usar" AnchorPane.leftAnchor="55.0" AnchorPane.topAnchor="90.0">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="lento" layoutX="65.0" layoutY="100.0" mnemonicParsing="false" text="Usar" AnchorPane.leftAnchor="330.0" AnchorPane.topAnchor="90.0">
+                              <Button fx:id="lento" layoutX="65.0" layoutY="100.0" mnemonicParsing="false" onAction="#handleLento" text="Usar" AnchorPane.leftAnchor="330.0" AnchorPane.topAnchor="90.0">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
