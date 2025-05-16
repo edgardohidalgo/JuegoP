@@ -162,21 +162,24 @@ public class pantallaJuegoController {
     // Método que actualiza los efectos visuales basados en la casilla
     private void actualizarEfectosCasilla(Casilla casilla) {
         if (casilla instanceof CasillaAgujero) {
-            eventos.setText("¡Cayó en un agujero! Retrocede una casilla.\n (Posición actual: " + jugador.getPosicion() + ")");
+            eventos.setText("¡Cayó en un agujero!\n Retrocede una casilla.\n (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaEvento) {
             System.out.println("Inventario actual: " + inventario.getLista().size() + " items");
             eventos.setText("¡Evento especial activado!\n (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaOso) {
-            eventos.setText("¡Un oso ha aparecido!\n Vuelve al inicio del tablero." +
-                    " (Posición actual: " + jugador.getPosicion() + ")");
+            if (jugador.getPosicion() == 0) {
+                eventos.setText("¡Un oso ha aparecido!\n No tenías peces y has vuelto al inicio.\n (Posición actual: " + jugador.getPosicion() + ")");
+            } else {
+                eventos.setText("¡Un oso ha aparecido!\n Has usado un pez para escapar.\n (Posición actual: " + jugador.getPosicion() + ")");
+            }
 
         } else if (casilla instanceof CasillaNormal) {
-            eventos.setText("Casilla Normal. (Posición actual: " + jugador.getPosicion() + ")");
+            eventos.setText("Casilla Normal.\n (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaTrineo) {
-            eventos.setText("¡El jugador ha caído en un trineo y\n avanza más rápido!(Posición actual: " + jugador.getPosicion() + ")");
+            eventos.setText("¡El jugador ha caído en un trineo y\n avanza más rápido!\n(Posición actual: " + jugador.getPosicion() + ")");
         }
     }
 
