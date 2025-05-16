@@ -121,6 +121,13 @@ public class pantallaJuegoController {
             // Actualizar la posición visual después del cambio
             actualizarPosicionVisual();
         }
+        if (jugador.getPosicion() == 49) {
+            mostrarMensajeVictoria();
+        } else {
+            // Actualizar el texto del evento y efectos visuales basados en el tipo de casilla
+            actualizarEfectosCasilla(casillaActual);
+        }
+        actualizarTextoInventario();
 
         // Actualizar el texto del evento y efectos visuales basados en el tipo de casilla
         String tipoCasilla = casillaActual.getClass().getSimpleName();
@@ -155,21 +162,21 @@ public class pantallaJuegoController {
     // Método que actualiza los efectos visuales basados en la casilla
     private void actualizarEfectosCasilla(Casilla casilla) {
         if (casilla instanceof CasillaAgujero) {
-            eventos.setText("¡Cayó en un agujero! Retrocede una casilla. (Posición actual: " + jugador.getPosicion() + ")");
+            eventos.setText("¡Cayó en un agujero! Retrocede una casilla.\n (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaEvento) {
             System.out.println("Inventario actual: " + inventario.getLista().size() + " items");
-            eventos.setText("¡Evento especial activado! (Posición actual: " + jugador.getPosicion() + ")");
+            eventos.setText("¡Evento especial activado!\n (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaOso) {
-            eventos.setText("¡Un oso ha aparecido! Vuelve al inicio del tablero." +
+            eventos.setText("¡Un oso ha aparecido!\n Vuelve al inicio del tablero." +
                     " (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaNormal) {
             eventos.setText("Casilla Normal. (Posición actual: " + jugador.getPosicion() + ")");
 
         } else if (casilla instanceof CasillaTrineo) {
-            eventos.setText("¡El jugador ha caído en un trineo y avanza más rápido! (Posición actual: " + jugador.getPosicion() + ")");
+            eventos.setText("¡El jugador ha caído en un trineo y\n avanza más rápido!(Posición actual: " + jugador.getPosicion() + ")");
         }
     }
 
@@ -274,5 +281,66 @@ public class pantallaJuegoController {
     private void handleNieve() {
         System.out.println("Snow.");
         // Implementar la lógica para usar las bolas de nieve
+    }
+
+    private void mostrarMensajeVictoria() {
+        // Cambiar el texto del evento para mostrar mensaje de victoria
+        eventos.setText("¡FELICIDADES! ¡Has llegado al final del tablero y has ganado el juego!");
+        eventos.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-fill: green;");
+
+        // Desactivar el botón del dado para evitar seguir jugando
+        dado.setDisable(true);
+        rapido.setDisable(true);
+        lento.setDisable(true);
+        peces.setDisable(true);
+        nieve.setDisable(true);
+
+        // También podríamos mostrar un diálogo de victoria
+        Alert alertaVictoria = new Alert(Alert.AlertType.INFORMATION);
+        alertaVictoria.setTitle("¡Victoria!");
+        alertaVictoria.setHeaderText("¡Has ganado!");
+        alertaVictoria.setContentText("Has llegado al final del tablero. ¡Felicidades por completar el juego!");
+        alertaVictoria.show();
+    }
+    @FXML
+    private void handleNewGame() {
+        System.out.println("New Game clicked");
+
+        // Reiniciar el juego llamando al método initialize
+        initialize();
+
+        // Habilitar todos los botones que pudieran estar deshabilitados
+        dado.setDisable(false);
+        rapido.setDisable(false);
+        lento.setDisable(false);
+        peces.setDisable(false);
+        nieve.setDisable(false);
+
+        // Restablecer el estilo del texto de eventos a su formato original
+        eventos.setStyle("");
+
+        // Mantener la estructura del texto del dado pero sin valor
+        dadoResultText.setText("Ha salido: -");
+        // Alternativa: dadoResultText.setText("Tira el dado para comenzar");
+
+        System.out.println("Nueva partida iniciada");
+    }
+
+    @FXML
+    private void handleSaveGame() {
+        System.out.println("Save Game clicked");
+        initialize();
+    }
+
+    @FXML
+    private void handleLoadGame() {
+        System.out.println("Load Game clicked");
+        // TODO
+    }
+
+    @FXML
+    private void handleQuitGame() {
+        System.out.println("Quit Game clicked");
+        System.exit(0);
     }
 }
