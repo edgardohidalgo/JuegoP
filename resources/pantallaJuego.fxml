@@ -93,7 +93,7 @@
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="lento_t" strokeType="OUTSIDE" strokeWidth="0.0" text="Dado lento: 0" AnchorPane.leftAnchor="280.0" AnchorPane.topAnchor="30.0">
+                              <Text fx:id="lento_t" strokeType="OUTSIDE" strokeWidth="0.0" text="Dado lento: 0" AnchorPane.leftAnchor="290.0" AnchorPane.topAnchor="30.0">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
@@ -113,7 +113,7 @@
                                     <Font size="30.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="lento" layoutX="65.0" layoutY="100.0" mnemonicParsing="false" text="Usar" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="90.0">
+                              <Button fx:id="lento" layoutX="65.0" layoutY="100.0" mnemonicParsing="false" text="Usar" AnchorPane.leftAnchor="330.0" AnchorPane.topAnchor="90.0">
                                  <font>
                                     <Font size="30.0" />
                                  </font>

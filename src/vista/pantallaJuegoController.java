@@ -207,29 +207,12 @@ public class pantallaJuegoController {
 
     @FXML
     private void handleRapido() {
-        System.out.println("Fast.");
+        Random rand = new Random();
+        int diceResult = rand.nextInt(6) + 5;  // Simulamos el lanzamiento del dado
+        dadoResultText.setText("Ha salido: " + diceResult);
 
-        // Buscamos primero si hay dados rápidos disponibles
-        boolean tieneDadoRapido = false;
-        for (Item item : inventario.getLista()) {
-            if (item.getNombre().equalsIgnoreCase("dado_rapido") && item.getCantidad() > 0) {
-                item.setCantidad(item.getCantidad() - 1); // Reducimos la cantidad
-                tieneDadoRapido = true;
-                break;
-            }
-        }
-
-        if (tieneDadoRapido) {
-            // Generamos un número aleatorio entre 5 y 10
-            Random rand = new Random();
-            int diceResult = rand.nextInt(6) + 5;  // Valores entre 5 y 10
-            dadoResultText.setText("Ha salido: " + diceResult);
-
-            // Movemos al jugador con el número de pasos que salió en el dado
-            moverJugador(diceResult);
-        } else {
-            eventos.setText("No tienes dados rápidos disponibles.");
-        }
+        // Movemos al jugador con el número de pasos que salió en el dado
+        moverJugador(diceResult);
     }
 
     @FXML
@@ -237,26 +220,12 @@ public class pantallaJuegoController {
         System.out.println("Slow.");
 
         // Buscamos primero si hay dados lentos disponibles
-        boolean tieneDadoLento = false;
-        for (Item item : inventario.getLista()) {
-            if (item.getNombre().equalsIgnoreCase("dado_lento") && item.getCantidad() > 0) {
-                item.setCantidad(item.getCantidad() - 1); // Reducimos la cantidad
-                tieneDadoLento = true;
-                break;
-            }
-        }
+        Random rand = new Random();
+        int diceResult = rand.nextInt(4) ;  // Simulamos el lanzamiento del dado
+        dadoResultText.setText("Ha salido: " + diceResult);
 
-        if (tieneDadoLento) {
-            // Generamos un número aleatorio entre 1 y 3
-            Random rand = new Random();
-            int diceResult = rand.nextInt(3) + 1;  // Valores entre 1 y 3
-            dadoResultText.setText("Ha salido: " + diceResult);
-
-            // Movemos al jugador con el número de pasos que salió en el dado
-            moverJugador(diceResult);
-        } else {
-            eventos.setText("No tienes dados lentos disponibles.");
-        }
+        // Movemos al jugador con el número de pasos que salió en el dado
+        moverJugador(diceResult);
     }
 
     @FXML
